@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   const CLERK_SIGNING_SECRET = process.env.CLERK_SIGNING_SECRET;
 
   if (!CLERK_SIGNING_SECRET) {
-    throw new Error("Error: Please add CLERK_SIGNING_SECRET from Clerk Dashboard to .env or .env");
+    throw new Error("Error: Please add CLERK_SIGNING_SECRET from Clerk Dashboard to .env");
   }
 
   // Create new Svix instance with secret
@@ -74,7 +74,6 @@ export async function POST(req: Request) {
         imageUrl: webhookEvent.data.image_url,
       })
       .where(eq(users.clerkId, webhookEvent.data.id));
-    // await db.delete(users).where(eq(users.clerkId, webhookEvent.data.id));
   }
 
   return new Response("Webhook received", { status: 200 });
