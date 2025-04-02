@@ -8,10 +8,8 @@ import { auth } from "@clerk/nextjs/server";
 import { rateLimit } from "@/lib/rateLimit";
 
 export const createTRPCContext = cache(async () => {
-  const authData = await auth();
-  if (!authData?.userId) return { clerkUserId: null };
-
-  return { clerkUserId: authData?.userId };
+  const { userId } = await auth();
+  return { clerkUserId: userId };
 });
 
 export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
@@ -25,6 +23,7 @@ const t = initTRPC.context<Context>().create({
    */
   transformer: superjson,
 });
+
 // Base router and procedure helpers
 export const createTRPCRouter = t.router;
 export const createCallerFactory = t.createCallerFactory;
@@ -32,14 +31,25 @@ export const baseProcedure = t.procedure;
 
 export const protectedProcedure = t.procedure.use(async function isAuthed(opts) {
   const { ctx } = opts;
-  if (!ctx.clerkUserId) throw new TRPCError({ code: "UNAUTHORIZED" });
 
+  // Ensure user is authenticated
+  if (!ctx.clerkUserId) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "User not authenticated" });
+  }
+
+  // Fetch user from DB
   const [user] = await db.select().from(users).where(eq(users.clerkId, ctx.clerkUserId)).limit(1);
-  if (!user) throw new TRPCError({ code: "UNAUTHORIZED" });
+  if (!user) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "User not found in database" });
+  }
 
+  // Rate limiting check
   const { success } = await rateLimit.limit(user.id);
-  if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+  if (!success) {
+    throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "Rate limit exceeded" });
+  }
 
+  // Proceed with the next procedure
   return opts.next({
     ctx: {
       ...ctx,
