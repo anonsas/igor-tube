@@ -1,6 +1,9 @@
 [⬅ Back](./trpc-client-server.md)
 
-### 🔄 Auto-Refresh
+### 🔄 Auto-Refresh (Revalidation)
+
+Revalidation refers to the process of refreshing cached data to ensure it's up-to-date.
+It is commonly used in data fetching, caching, and server-side rendering (SSR) strategies.
 
 Auto-Refresh refers to keeping the client-side data in sync with the latest data from the server without a full page reload.
 

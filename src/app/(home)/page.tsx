@@ -1,5 +1,5 @@
 import { HydrateClient, trpc } from "@/trpc/server";
-import { HomeView } from "@/modules/home/ui/views/home-view";
+import { HomeView } from "@/modules/home/ui/view/home-view";
 
 export const dynamic = "force-dynamic";
 
