@@ -32,7 +32,6 @@ export function CategoriesSectionSuspense({ categoryId }: Props) {
 
   const onSelect = (value: string | null) => {
     const url = new URL(window.location.href);
-    console.log("url", url);
 
     value ? url.searchParams.set(SEARCH_PARAMS.CATEGORY_ID, value) : url.searchParams.delete(SEARCH_PARAMS.CATEGORY_ID);
     router.push(url.toString());
