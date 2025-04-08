@@ -1,9 +1,9 @@
 "use client";
 
-import { useParams } from "next/navigation";
+interface Props {
+  videoId: string;
+}
 
-export function VideosView() {
-  const params = useParams();
-
-  return <div>videos-view</div>;
+export function VideosView({ videoId }: Props) {
+  return <div>videos-view {videoId}</div>;
 }
