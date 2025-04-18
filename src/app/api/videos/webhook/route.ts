@@ -8,7 +8,7 @@ import {
   VideoAssetTrackReadyWebhookEvent,
 } from "@mux/mux-node/resources/webhooks";
 
-import { db } from "@/db";
+import { db } from "@/db/schema";
 import { mux } from "@/lib/mux";
 import { videos } from "@/db/schema";
 

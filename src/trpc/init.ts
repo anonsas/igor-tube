@@ -1,10 +1,10 @@
 import { cache } from "react";
-import { db } from "@/db";
 import { eq } from "drizzle-orm";
-import { users } from "@/db/schema";
-import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { auth } from "@clerk/nextjs/server";
+import { initTRPC, TRPCError } from "@trpc/server";
+
+import { db, users } from "@/db/schema";
 import { rateLimit } from "@/lib/rateLimit";
 
 export const createTRPCContext = cache(async () => {

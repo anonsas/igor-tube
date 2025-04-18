@@ -1,6 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import { Loader2Icon, PlusIcon } from "lucide-react";
 
 import { trpc } from "@/trpc/client";
@@ -9,10 +10,10 @@ import { StudioUploader } from "../studio-uploader";
 import { ResponsiveModal } from "@/components/responsive-modal";
 
 export function StudioUploadModal() {
+  const router = useRouter();
   const utils = trpc.useUtils();
   const create = trpc.videos.create.useMutation({
     onSuccess: () => {
-      toast.success("Video created");
       utils.studio.getMany.invalidate();
     },
     onError(error) {
@@ -20,10 +21,18 @@ export function StudioUploadModal() {
     },
   });
 
+  const onSuccess = () => {
+    if (!create.data?.video.id) return;
+    toast.success("Video uploaded");
+
+    create.reset();
+    router.push(`/studio/videos/${create.data?.video.id}`);
+  };
+
   return (
     <>
       <ResponsiveModal title="Upload a video" open={!!create.data?.url} onOpenChange={() => create.reset()}>
-        {create.data?.url ? <StudioUploader endpoint={create.data?.url} onSuccess={() => {}} /> : <Loader2Icon />}
+        {create.data?.url ? <StudioUploader endpoint={create.data?.url} onSuccess={onSuccess} /> : <Loader2Icon />}
       </ResponsiveModal>
 
       <Button variant="secondary" onClick={() => create.mutate()} disabled={create.isPending}>

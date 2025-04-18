@@ -9,13 +9,15 @@ import { ErrorBoundary } from "react-error-boundary";
 import { API } from "@/constants";
 import { trpc } from "@/trpc/client";
 import { snakeCaseToTitle } from "@/lib/utils";
+import { VideosSectionSkeleton } from "./skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { InfiniteScroll } from "@/components/infinite-scroll";
 import { VideoThumbnail } from "@/modules/videos/ui/components/video-thumbnail";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export function VideosSection() {
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense fallback={<VideosSectionSkeleton />}>
       <ErrorBoundary fallback={<p>Something went wrong...</p>}>
         <VideosSectionSuspense />
       </ErrorBoundary>
@@ -51,7 +53,7 @@ function VideosSectionSuspense() {
             {videos.map((video) => (
               <Link key={video.id} href={`/studio/videos/${video.id}`} legacyBehavior>
                 <TableRow className="cursor-pointer">
-                  <TableCell>
+                  <TableCell className="pl-6">
                     <div className="flex items-center gap-4 ">
                       <div className="relative aspect-video w-36 shrink-0">
                         <VideoThumbnail
@@ -85,9 +87,9 @@ function VideosSectionSuspense() {
                     <div className="flex items-center">{snakeCaseToTitle(video.muxStatus ?? "error")}</div>
                   </TableCell>
                   <TableCell className="text-sm truncate">{format(new Date(video.createdAt), "d MMM yyyy")}</TableCell>
-                  <TableCell className="text-right">Views</TableCell>
-                  <TableCell className="text-right">Comments</TableCell>
-                  <TableCell className="text-right pr-6">Likes</TableCell>
+                  <TableCell className="text-right text-sm">Views</TableCell>
+                  <TableCell className="text-right text-sm ">Comments</TableCell>
+                  <TableCell className="text-right text-sm pr-6">Likes</TableCell>
                 </TableRow>
               </Link>
             ))}

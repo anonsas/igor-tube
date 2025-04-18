@@ -1,5 +1,5 @@
-import { db } from "@/db";
-import { categories } from "@/db/schema";
+import { db } from "@/db/schema";
+import { categories } from "@/db/schema/categories";
 
 const categoryNames = [
   "Cars and vehicles",
