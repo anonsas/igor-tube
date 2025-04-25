@@ -10,18 +10,17 @@ import { API } from "@/constants";
 import { trpc } from "@/trpc/client";
 import { snakeCaseToTitle } from "@/lib/utils";
 import { VideosSectionSkeleton } from "./skeleton";
-import { Skeleton } from "@/components/ui/skeleton";
 import { InfiniteScroll } from "@/components/infinite-scroll";
 import { VideoThumbnail } from "@/modules/videos/ui/components/video-thumbnail";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export function VideosSection() {
   return (
-    <Suspense fallback={<VideosSectionSkeleton />}>
-      <ErrorBoundary fallback={<p>Something went wrong...</p>}>
+    <ErrorBoundary fallback={<p>Something went wrong...</p>}>
+      <Suspense fallback={<VideosSectionSkeleton />}>
         <VideosSectionSuspense />
-      </ErrorBoundary>
-    </Suspense>
+      </Suspense>
+    </ErrorBoundary>
   );
 }
 

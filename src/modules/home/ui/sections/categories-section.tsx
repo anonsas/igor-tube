@@ -2,10 +2,11 @@
 
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+
 import { trpc } from "@/trpc/client";
-import { FilterCarousel } from "@/components/filter-carousel";
 import { useRouter } from "next/navigation";
 import { SEARCH_PARAMS } from "@/constants";
+import { FilterCarousel } from "@/components/filter-carousel";
 
 interface Props {
   categoryId?: string;
@@ -13,11 +14,11 @@ interface Props {
 
 export function CategoriesSection({ categoryId }: Props) {
   return (
-    <Suspense fallback={<FilterCarousel isLoading data={[]} onSelect={() => {}} />}>
-      <ErrorBoundary fallback={<p>Error: something went wrong</p>}>
+    <ErrorBoundary fallback={<p>Error: something went wrong</p>}>
+      <Suspense fallback={<FilterCarousel isLoading data={[]} onSelect={() => {}} />}>
         <CategoriesSectionSuspense categoryId={categoryId} />
-      </ErrorBoundary>
-    </Suspense>
+      </Suspense>
+    </ErrorBoundary>
   );
 }
 

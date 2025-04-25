@@ -2,8 +2,8 @@ import { Webhook } from "svix";
 import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { db } from "@/db/schema";
-import { users } from "@/db/schema/categories";
+
+import { db, users } from "@/db/schema";
 
 export async function POST(req: Request) {
   const CLERK_SIGNING_SECRET = process.env.CLERK_SIGNING_SECRET;
@@ -60,6 +60,7 @@ export async function POST(req: Request) {
     if (!webhookEvent.data.id) {
       return new Response("Missing user id", { status: 400 });
     }
+
     await db.delete(users).where(eq(users.clerkId, webhookEvent.data.id));
   }
 
@@ -67,6 +68,7 @@ export async function POST(req: Request) {
     if (!webhookEvent.data.id) {
       return new Response("Missing user id", { status: 400 });
     }
+
     await db
       .update(users)
       .set({

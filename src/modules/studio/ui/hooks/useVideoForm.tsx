@@ -32,10 +32,19 @@ export function useVideoForm(videoId: string) {
     onError: () => toast.error("Something went wrong"),
   });
 
+  const restoreThumbnail = trpc.videos.restoreThumbnail.useMutation({
+    onSuccess: () => {
+      utils.studio.getMany.invalidate();
+      utils.studio.getOne.invalidate({ id: videoId });
+      toast.success("Thumbnail restored");
+    },
+    onError: () => toast.error("Something went wrong"),
+  });
+
   const form = useForm<z.infer<typeof videoUpdateSchema>>({
     resolver: zodResolver(videoUpdateSchema),
     defaultValues: video,
   });
 
-  return { form, updateVideo, deleteVideo, video, categories };
+  return { form, video, categories, updateVideo, deleteVideo, restoreThumbnail };
 }

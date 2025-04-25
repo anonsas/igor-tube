@@ -9,11 +9,11 @@ import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { VideoPlayer } from "@/modules/videos/ui/components/video-player";
 
 interface Props {
-  fullUrl: string;
+  videoUrl: string;
   video: z.infer<typeof videoSelectSchema>;
 }
 
-export function VideoPreview({ fullUrl, video }: Props) {
+export function FormVideoPreview({ videoUrl, video }: Props) {
   const { copy, isCopied } = useCopyToClipboard();
 
   return (
@@ -28,14 +28,14 @@ export function VideoPreview({ fullUrl, video }: Props) {
             <p className="text-muted-foreground text-sm">Video link</p>
             <div className="flex items-center gap-x-2">
               <Link href={`/videos/${video.id}`}>
-                <p className="line-clamp-1 text-sm text-blue-500">{fullUrl}</p>
+                <p className="line-clamp-1 text-sm text-blue-500">{videoUrl}</p>
               </Link>
               <Button
                 type="button"
                 variant="ghost"
                 size="icon"
                 className="shrink-0"
-                onClick={() => copy(fullUrl)}
+                onClick={() => copy(videoUrl)}
                 disabled={isCopied}
               >
                 {isCopied ? <CopyCheckIcon /> : <CopyIcon />}
