@@ -10,10 +10,10 @@ import { Button } from "@/components/ui/button";
 
 interface Props {
   isSaving: boolean;
-  onDelete: () => void;
+  onDeleteVideo: () => void;
 }
 
-export function FormHeader({ isSaving, onDelete }: Props) {
+export function FormHeader({ isSaving, onDeleteVideo }: Props) {
   return (
     <div className="flex items-center justify-between mb-6">
       <div>
@@ -33,7 +33,7 @@ export function FormHeader({ isSaving, onDelete }: Props) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={onDelete}>
+            <DropdownMenuItem onClick={onDeleteVideo}>
               <TrashIcon className="size-4 mr-2" />
               Delete
             </DropdownMenuItem>

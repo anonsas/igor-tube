@@ -16,10 +16,17 @@ interface Props {
   form: UseFormReturn;
   thumbnailUrl: string;
   onRestoreThumbnail: () => void;
+  onGenerateThumbnail: () => void;
   setIsThumbnailModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export function FormFieldThumbnail({ form, thumbnailUrl, onRestoreThumbnail, setIsThumbnailModalOpen }: Props) {
+export function FormFieldThumbnail({
+  form,
+  thumbnailUrl,
+  onRestoreThumbnail,
+  onGenerateThumbnail,
+  setIsThumbnailModalOpen,
+}: Props) {
   return (
     <FormField
       control={form.control}
@@ -46,7 +53,7 @@ export function FormFieldThumbnail({ form, thumbnailUrl, onRestoreThumbnail, set
                     <ImagePlusIcon className="size-4 mr-1" />
                     Change
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onGenerateThumbnail()}>
                     <SparklesIcon className="size-4 mr-1" />
                     AI-generated
                   </DropdownMenuItem>

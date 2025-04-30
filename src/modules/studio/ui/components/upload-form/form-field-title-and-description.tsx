@@ -1,14 +1,28 @@
+import { Loader2Icon, SparklesIcon } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { FormControl, FormField, FormLabel, FormMessage, FormItem } from "@/components/ui/form";
 
 interface Props {
   form: UseFormReturn;
+  isButtonDisabled: boolean;
+  isTitlePending: boolean;
+  isDescriptionPending: boolean;
+  onGenerateTitle: () => void;
+  onGenerateDescription: () => void;
 }
 
-export function FormFieldTitleAndDescription({ form }: Props) {
+export function FormFieldTitleAndDescription({
+  form,
+  isButtonDisabled,
+  isTitlePending,
+  isDescriptionPending,
+  onGenerateTitle,
+  onGenerateDescription,
+}: Props) {
   return (
     <>
       <FormField
@@ -16,7 +30,21 @@ export function FormFieldTitleAndDescription({ form }: Props) {
         name="title"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Title</FormLabel> {/*TODO ADD AI Generated button */}
+            <FormLabel>
+              <div className="flex items-center gap-x-2">
+                Title
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="outline"
+                  className="rounded-full size-6 [&_svg]:size-3"
+                  onClick={onGenerateTitle}
+                  disabled={isTitlePending || isButtonDisabled}
+                >
+                  {isTitlePending ? <Loader2Icon className="animate-spin" /> : <SparklesIcon />}
+                </Button>
+              </div>
+            </FormLabel>
             <FormControl>
               <Input {...field} placeholder="Add a title to your video" />
             </FormControl>
@@ -30,7 +58,21 @@ export function FormFieldTitleAndDescription({ form }: Props) {
         name="description"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Description</FormLabel> {/*TODO ADD AI Generated button */}
+            <FormLabel>
+              <div className="flex items-center gap-x-2">
+                Description
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="outline"
+                  className="rounded-full size-6 [&_svg]:size-3"
+                  onClick={onGenerateDescription}
+                  disabled={isDescriptionPending || isButtonDisabled}
+                >
+                  {isDescriptionPending ? <Loader2Icon className="animate-spin" /> : <SparklesIcon />}
+                </Button>
+              </div>
+            </FormLabel>
             <FormControl>
               <Textarea
                 {...field}

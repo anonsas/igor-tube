@@ -20,26 +20,37 @@ interface Props {
 
 export function UploadForm({ videoId, setIsThumbnailModalOpen }: Props) {
   const fullUrl = useFullUrl(`/videos/${videoId}`);
-  const { form, video, categories, updateVideo, deleteVideo, restoreThumbnail } = useVideoForm(videoId);
+  const { form, video, categories, mutations } = useVideoForm(videoId);
 
-  const onDelete = () => deleteVideo.mutate({ id: videoId });
-  const onRestoreThumbnail = () => restoreThumbnail.mutate({ id: videoId });
+  const onDeleteVideo = () => mutations.deleteVideo.mutate({ id: videoId });
+  const onRestoreThumbnail = () => mutations.restoreThumbnail.mutate({ id: videoId });
+  const onGenerateTitle = () => mutations.generateTitle.mutate({ id: videoId });
+  const onGenerateDescription = () => mutations.generateDescription.mutate({ id: videoId });
+  const onGenerateThumbnail = () => mutations.generateThumbnail.mutate({ id: videoId });
 
   // If we use: updateVideo.mutate(data) - this form.formState.isSubmitting won't work
-  const onSubmit = async (data: z.infer<typeof videoUpdateSchema>) => await updateVideo.mutateAsync(data);
+  const onSubmitForm = async (data: z.infer<typeof videoUpdateSchema>) => await mutations.updateVideo.mutateAsync(data);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormHeader isSaving={updateVideo.isPending} onDelete={onDelete} />
+      <form onSubmit={form.handleSubmit(onSubmitForm)}>
+        <FormHeader isSaving={mutations.updateVideo.isPending} onDeleteVideo={onDeleteVideo} />
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           <div className="space-y-8 lg:col-span-3">
-            <FormFieldTitleAndDescription form={form} />
+            <FormFieldTitleAndDescription
+              form={form}
+              isButtonDisabled={!video.muxTrackId}
+              onGenerateTitle={onGenerateTitle}
+              onGenerateDescription={onGenerateDescription}
+              isTitlePending={mutations.generateTitle.isPending}
+              isDescriptionPending={mutations.generateDescription.isPending}
+            />
             <FormFieldThumbnail
               form={form}
               thumbnailUrl={video.thumbnailUrl || THUMBNAIL_FALLBACK}
               onRestoreThumbnail={onRestoreThumbnail}
+              onGenerateThumbnail={onGenerateThumbnail}
               setIsThumbnailModalOpen={setIsThumbnailModalOpen}
             />
             <FormFieldCategory form={form} categories={categories} />
