@@ -55,13 +55,6 @@ export function useVideoForm(videoId: string) {
       },
       onError: () => toast.error("Something went wrong"),
     }),
-
-    generateThumbnail: trpc.videos.generateThumbnail.useMutation({
-      onSuccess: () => {
-        toast.success("Background job started", { description: "This may take some time" });
-      },
-      onError: () => toast.error("Something went wrong"),
-    }),
   };
 
   const form = useForm<z.infer<typeof videoUpdateSchema>>({

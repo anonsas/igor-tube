@@ -16,9 +16,10 @@ import { FormFieldTitleAndDescription } from "./form-field-title-and-description
 interface Props {
   videoId: string;
   setIsThumbnailModalOpen: Dispatch<SetStateAction<boolean>>;
+  setIsThumbnailGenerateModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export function UploadForm({ videoId, setIsThumbnailModalOpen }: Props) {
+export function UploadForm({ videoId, setIsThumbnailModalOpen, setIsThumbnailGenerateModalOpen }: Props) {
   const fullUrl = useFullUrl(`/videos/${videoId}`);
   const { form, video, categories, mutations } = useVideoForm(videoId);
 
@@ -26,7 +27,6 @@ export function UploadForm({ videoId, setIsThumbnailModalOpen }: Props) {
   const onRestoreThumbnail = () => mutations.restoreThumbnail.mutate({ id: videoId });
   const onGenerateTitle = () => mutations.generateTitle.mutate({ id: videoId });
   const onGenerateDescription = () => mutations.generateDescription.mutate({ id: videoId });
-  const onGenerateThumbnail = () => mutations.generateThumbnail.mutate({ id: videoId });
 
   // If we use: updateVideo.mutate(data) - this form.formState.isSubmitting won't work
   const onSubmitForm = async (data: z.infer<typeof videoUpdateSchema>) => await mutations.updateVideo.mutateAsync(data);
@@ -50,8 +50,8 @@ export function UploadForm({ videoId, setIsThumbnailModalOpen }: Props) {
               form={form}
               thumbnailUrl={video.thumbnailUrl || THUMBNAIL_FALLBACK}
               onRestoreThumbnail={onRestoreThumbnail}
-              onGenerateThumbnail={onGenerateThumbnail}
               setIsThumbnailModalOpen={setIsThumbnailModalOpen}
+              setIsThumbnailGenerateModalOpen={setIsThumbnailGenerateModalOpen}
             />
             <FormFieldCategory form={form} categories={categories} />
           </div>

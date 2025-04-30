@@ -25,13 +25,15 @@ export const videosRouter = createTRPCRouter({
 
   generateTitle: protectedProcedure
     .input(z.object({ id: z.string().uuid() }))
-    .mutation(({ ctx, input }) => triggerVideoWorkflow("title", ctx.user.id, input.id)),
+    .mutation(({ ctx, input }) => triggerVideoWorkflow("title", { userId: ctx.user.id, videoId: input.id })),
 
   generateDescription: protectedProcedure
     .input(z.object({ id: z.string().uuid() }))
-    .mutation(({ ctx, input }) => triggerVideoWorkflow("description", ctx.user.id, input.id)),
+    .mutation(({ ctx, input }) => triggerVideoWorkflow("description", { userId: ctx.user.id, videoId: input.id })),
 
   generateThumbnail: protectedProcedure
-    .input(z.object({ id: z.string().uuid() }))
-    .mutation(({ ctx, input }) => triggerVideoWorkflow("thumbnail", ctx.user.id, input.id)),
+    .input(z.object({ id: z.string().uuid(), prompt: z.string().min(10) }))
+    .mutation(({ ctx, input }) =>
+      triggerVideoWorkflow("thumbnail", { userId: ctx.user.id, videoId: input.id, prompt: input.prompt })
+    ),
 });
