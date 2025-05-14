@@ -34,7 +34,10 @@ export function UploadForm({ videoId, setIsThumbnailModalOpen, setIsThumbnailGen
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmitForm)}>
-        <FormHeader isSaving={mutations.updateVideo.isPending} onDeleteVideo={onDeleteVideo} />
+        <FormHeader
+          onDeleteVideo={onDeleteVideo}
+          isButtonDisabled={mutations.updateVideo.isPending || !form.formState.isDirty}
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           <div className="space-y-8 lg:col-span-3">

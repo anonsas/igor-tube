@@ -9,11 +9,11 @@ import {
 import { Button } from "@/components/ui/button";
 
 interface Props {
-  isSaving: boolean;
+  isButtonDisabled: boolean;
   onDeleteVideo: () => void;
 }
 
-export function FormHeader({ isSaving, onDeleteVideo }: Props) {
+export function FormHeader({ isButtonDisabled, onDeleteVideo }: Props) {
   return (
     <div className="flex items-center justify-between mb-6">
       <div>
@@ -22,7 +22,7 @@ export function FormHeader({ isSaving, onDeleteVideo }: Props) {
       </div>
 
       <div className="flex items-center gap-x-2">
-        <Button type="submit" disabled={isSaving}>
+        <Button type="submit" disabled={isButtonDisabled}>
           Save
         </Button>
 
